@@ -11,4 +11,7 @@ router.use('/courses', courseRoutes);
 router.use('/completions', completionRoutes); 
 router.use('/class', classRoutes); 
 router.use('/students', studentRoutes);
+router.use('/check/health', (req, res) => {
+    res.send('Backend is running');
+  });
 module.exports = router;
