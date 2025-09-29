@@ -101,3 +101,48 @@ exports.createCourse = async (req, res) => {
     res.status(500).json({ message: "Server error creating course." });
   }
 };
+
+// Delete Course
+exports.deleteCourse = async ( req, res)=> {
+  const {courseId} = req.params;
+
+  if (isNaN(parseInt(courseId))) {
+    return res.status(400).json({
+      message: "Invlid course ID"
+    })
+  }
+
+  try {
+    const [courseResult] = await pool.execute(
+      "SELECT id, title FROM courses WHERE id = ?",
+      [courseId]
+    )
+
+    if (courseResult.length === 0){
+      return res.status(404).json({
+        message: "COurse not found"
+      })
+    }
+
+    const course = courseResult[0]
+
+    await pool.execute(
+      "DELETE FROM courses WHERE id = ?",
+      [courseId]
+    )
+
+    res.json({
+      message: "Course deleted successfully",
+      deletedCoursed: {
+        id: course.id,
+        title: course.title
+      }
+    })
+
+
+  }catch (error) {
+    res.status(500).json({
+      message: "Serve error deleting course"
+    })
+  }
+}
