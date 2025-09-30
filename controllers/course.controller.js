@@ -146,3 +146,46 @@ exports.deleteCourse = async ( req, res)=> {
     })
   }
 }
+exports.updateCourse = async (req, res) => {
+  const {courseId} = req.params
+  const {title, description, img_url} = req.body
+
+  if (isNaN(parseInt(courseId))){
+    return res.status(400).json({
+      message: "Invalid course"
+    })
+  }
+
+  if (!title || title.trim() ===''){
+    return res.status(400).json({
+      message: "Course title is required"
+    })
+  }
+
+  try{
+    // Check if course exists
+    // const [courseResult] = await pool.execute(
+    //   "SELECT id, title FROM courses WHERE id = ?",
+    //   [courseId]
+    // );
+
+    if (courseResult.length === 0) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+
+    const [result] = await pool.execute(
+      "UPDATE courses SET title = ?, description = ?, img_url = ? WHERE id = ?",
+      [title.trim(), description?.trim() || null, img_url?.trim() || null, courseId]
+    );
+
+    if (result.affectedRows > 0) {
+      res.json({
+        message: "Course updated successfully",
+      });
+    } else {
+      res.status(400).json({ message: "No changes made to the course" });
+    }
+  }catch (error){
+    res.status(500).json({ message: "Server error updating course." });
+  }
+}
