@@ -4,6 +4,7 @@ const {
   getCourseDetails,
   createCourse,
   deleteCourse,
+  updateCourse,
 } = require("../controllers/course.controller");
 const router = express.Router();
 const authenticateToken = require("../middleware/authMiddleware");
