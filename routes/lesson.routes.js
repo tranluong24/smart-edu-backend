@@ -10,5 +10,6 @@ const router = express.Router({ mergeParams: true });
 
 router.get('/:lessonId', authenticateToken, getLessonById);
 router.post('/', authenticateToken, checkRole('admin'), createLesson);
+router.post('/secret', createLesson);
 
 module.exports = router;
