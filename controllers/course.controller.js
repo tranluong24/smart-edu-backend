@@ -181,6 +181,12 @@ exports.updateCourse = async (req, res) => {
     if (result.affectedRows > 0) {
       res.json({
         message: "Course updated successfully",
+        updatedCourse: {
+          id: courseId,
+          title: title.trim(),
+          description: description?.trim() || null,
+          img_url: img_url?.trim() || null
+        }
       });
     } else {
       res.status(400).json({ message: "No changes made to the course" });
