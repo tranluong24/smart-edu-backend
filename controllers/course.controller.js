@@ -169,9 +169,9 @@ exports.updateCourse = async (req, res) => {
     //   [courseId]
     // );
 
-    if (courseResult.length === 0) {
-      return res.status(404).json({ message: "Course not found" });
-    }
+    // if (courseResult.length === 0) {
+    //   return res.status(404).json({ message: "Course not found" });
+    // }
 
     const [result] = await pool.execute(
       "UPDATE courses SET title = ?, description = ?, img_url = ? WHERE id = ?",
